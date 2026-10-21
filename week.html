@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module E - שבוע</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main id="app"><p>טוען...</p></main>
+<script src="data.js"></script>
+<script>
+(function(){
+var KEY="module-e.known.v1";
+var app=document.getElementById("app");
+app.innerHTML="";
+var n=parseInt(new URLSearchParams(location.search).get("w"),10);
+var W=WEEKS.filter(function(x){return x.number===n})[0];
+if(!W){app.innerHTML='<div class="card"><p>השבוע לא נמצא.</p><a href="index.html">חזרה לתוכנית</a></div>';return}
+document.title="Module E - "+W.label;
+var known={};var canSave=true;
+try{known=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){canSave=false}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(known))}catch(e){canSave=false;renderWords()}}
+var revealed={};var confirming=null;var undo=null;var timer=null;var speaking=null;
+function k(en){return W.number+"|"+en}
+function el(t,c,txt){var e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e}
+function list(items,tag,cls){var l=el(tag,"list"+(cls?" "+cls:""));items.forEach(function(i){l.appendChild(el("li",null,i))});return l}
+function card(title){var c=el("section","card");if(title)c.appendChild(el("h2",null,title));app.appendChild(c);return c}
+
+/* audio */
+var voice=null;
+function pickVoice(){
+ try{var vs=speechSynthesis.getVoices()||[];
+  voice=vs.filter(function(v){return /^en[-_]US/i.test(v.lang)})[0]||vs.filter(function(v){return /^en/i.test(v.lang)})[0]||null}catch(e){}
+}
+if("speechSynthesis" in window){pickVoice();try{speechSynthesis.onvoiceschanged=pickVoice}catch(e){}}
+function spoken(t){return t.replace(/\bsth\b/g,"something").replace(/\bsb\b/g,"somebody").replace(/\//g," ").replace(/\s+/g," ").trim()}
+function speak(text,done){
+ if(!("speechSynthesis" in window)||typeof SpeechSynthesisUtterance==="undefined"){var m=document.getElementById("nosound");if(m)m.hidden=false;done();return}
+ try{
+  speechSynthesis.cancel();
+  var u=new SpeechSynthesisUtterance(spoken(text));
+  u.lang="en-US";u.rate=0.85;if(voice)u.voice=voice;
+  u.onend=done;u.onerror=done;
+  speechSynthesis.speak(u);
+ }catch(e){done()}
+}
+
+/* header */
+var head=card();
+head.appendChild(el("h1",null,W.label));
+head.appendChild(el("p","fact",W.fact));
+head.appendChild(el("p",null,W.intro));
+
+/* words */
+var wc=card("המילים של השבוע ("+W.words.length+")");
+var nosound=el("div","note warn","אין סאונד? פתחו את הקישור בדפדפן רגיל (Chrome או Safari) ולא בתוך וואטסאפ, ובדקו שהטלפון לא על שקט.");
+nosound.id="nosound";nosound.hidden=true;
+wc.appendChild(el("div","note","המילים הן מתוך רשימת Module E הרשמית של משרד החינוך (4 יח\"ל). התרגומים לעברית נכתבו לצורכי תרגול בלבד, ואינם תרגום רשמי."));
+wc.appendChild(el("p",null,"בכל שורה קודם מנסים לזכור בעצמכם. יודעים את המילה? לחצו \"יודע/ת\" ואשרו - והיא תצא מהרשימה. לא יודעים? געו במילה באנגלית - תשמעו את ההגייה והתרגום יתגלה."));
+wc.appendChild(nosound);
+var bar=el("div","bar");var undoBox=el("div");var wordsBox=el("div");var knownBox=el("div");var saveNote=el("div");
+wc.appendChild(bar);wc.appendChild(undoBox);wc.appendChild(wordsBox);wc.appendChild(knownBox);wc.appendChild(saveNote);
+
+function row(w,i,inKnown){
+ var r=el("div","row");
+ var b=el("button","speak"+(speaking===w.en?" on":""));b.type="button";
+ if(!inKnown){b.appendChild(el("span","num",(i+1)+"."))}
+ b.appendChild(document.createTextNode(" "+w.en+" 🔊"));
+ b.onclick=function(){revealed[w.en]=true;speaking=w.en;
+  speak(w.en,function(){if(speaking===w.en){speaking=null;renderWords()}});renderWords()};
+ r.appendChild(b);
+ if(inKnown){
+  var u=el("button","lb","להחזיר לרשימה");u.type="button";u.onclick=function(){delete known[k(w.en)];save();renderWords()};r.appendChild(u);
+ }else{
+  var kb=el("button","know"+(confirming===w.en?" sure":""),confirming===w.en?"בטוח?":"יודע/ת");kb.type="button";
+  kb.onclick=function(){
+   if(confirming===w.en){clearTimeout(timer);confirming=null;known[k(w.en)]=1;undo=w.en;save();renderWords()}
+   else{confirming=w.en;clearTimeout(timer);timer=setTimeout(function(){confirming=null;renderWords()},4000);renderWords()}
+  };
+  r.appendChild(kb);
+ }
+ if(revealed[w.en]||inKnown){r.appendChild(el("div","he",w.he))}
+ return r;
+}
+function renderWords(){
+ var rem=[],kn=[];
+ W.words.forEach(function(w,i){(known[k(w.en)]?kn:rem).push([w,i])});
+ bar.innerHTML="";
+ var s=el("span");s.appendChild(document.createTextNode("נשארו ללמוד "));s.appendChild(el("strong",null,String(rem.length)));s.appendChild(document.createTextNode(" מתוך "+W.words.length));
+ bar.appendChild(s);
+ if(kn.length){var rs=el("button","lb","איפוס הרשימה");rs.type="button";rs.onclick=function(){W.words.forEach(function(w){delete known[k(w.en)]});revealed={};undo=null;save();renderWords()};bar.appendChild(rs)}
+ undoBox.innerHTML="";
+ if(undo&&known[k(undo)]){var ub=el("div","undo");var q=el("span","en",'"'+undo+'"');ub.appendChild(q);ub.appendChild(document.createTextNode(" סומנה כידועה. "));
+  var x=el("button","lb","ביטול");x.type="button";x.onclick=function(){delete known[k(undo)];undo=null;save();renderWords()};ub.appendChild(x);undoBox.appendChild(ub)}
+ wordsBox.innerHTML="";
+ rem.forEach(function(p){wordsBox.appendChild(row(p[0],p[1],false))});
+ if(!rem.length){wordsBox.appendChild(el("div","note ok","כל הכבוד! סימנתם את כל המילים כידועות. אפשר לאפס את הרשימה ולהתחיל מחדש."))}
+ knownBox.innerHTML="";
+ if(kn.length){var d=el("details");d.appendChild(el("summary",null,"מילים שסימנתם כידועות ("+kn.length+")"));kn.forEach(function(p){d.appendChild(row(p[0],p[1],true))});knownBox.appendChild(d)}
+ saveNote.innerHTML="";
+ if(!canSave)saveNote.appendChild(el("div","note warn","הדפדפן לא מאפשר לשמור, ולכן הסימון יאבד כשתסגרו את הדף."));
+}
+renderWords();
+
+/* rest */
+card("איך לתרגל במהלך השבוע").appendChild(list(W.plan,"ol"));
+card("משפטים קצרים").appendChild(list(W.short,"ul","en"));
+card("משפטים ארוכים").appendChild(list(W.long,"ul","en"));
+var pc=card("פסקה לקריאה");var pp=el("p","en",W.paragraph);pc.appendChild(pp);
+var sc=card("משימת סיפור");sc.appendChild(el("div","note",W.story+" סמנו את המילים שבהן השתמשתם."));
+var qc=card("הבוחן השבועי");
+qc.appendChild(el("p",null,"15 דקות · 16 נקודות. עונים במחברת בלי להסתכל ברשימת המילים. זה תרגול עצמי, בלי בדיקה אוטומטית."));
+qc.appendChild(el("div","note",W.number===1?"א. תרגום לעברית - 10 נקודות. בשבוע הראשון כל 10 המילים הן מהשבוע הנוכחי.":"א. תרגום לעברית - 10 נקודות. 6 מילים מהשבוע הנוכחי ו-4 מילים לחזרה מהשבוע הקודם."));
+qc.appendChild(list(W.translation,"ol","en"));
+qc.appendChild(el("p",null,"ב. השלימו את המשפטים - 5 נקודות. השתמשו בכל מילה מבנק המילים פעם אחת."));
+qc.appendChild(el("div","note en","Word bank: "+W.quizBank.slice().sort().join(" · ")));
+qc.appendChild(list(W.quizSentences,"ol","en"));
+qc.appendChild(el("p",null,"ג. כתבו משפט אחד באנגלית עם שתי המילים הבאות - נקודה אחת."));
+qc.appendChild(el("p","en",W.writeWords.join(" + ")));
+var nv=card("ניווט");var nav=el("div","nav");
+function link(t,h){var a=el("a",null,t);a.href=h;nav.appendChild(a)}
+link("דף התוכנית - כל 13 השבועות","index.html");
+if(n>1)link("לשבוע הקודם","week.html?w="+(n-1));
+if(n<13)link("לשבוע הבא","week.html?w="+(n+1));
+nv.appendChild(nav);
+var cl=el("p","closing",W.closing);app.appendChild(cl);
+})();
+</script>
+</body>
+</html>
