@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="am" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ቤተ እስራኤል - ምርጉም የስግድ በዓል!</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Noto Sans Ethiopic", "Nyala", "Abyssinica SIL", sans-serif;
+    background: #fdf6ec;
+    color: #2b2b2b;
+    line-height: 1.9;
+    padding: 16px;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; }
+  header {
+    text-align: center;
+    padding: 24px 12px 12px;
+  }
+  header h1 { font-size: 2rem; color: #7a4a12; }
+  .player {
+    position: sticky;
+    top: 0;
+    background: #fdf6ec;
+    padding: 12px 0;
+    text-align: center;
+    z-index: 10;
+  }
+  #playBtn {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    border: none;
+    background: #c96a1b;
+    color: #fff;
+    font-size: 2.4rem;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,.25);
+  }
+  #playBtn:active { transform: scale(.96); }
+  .hint { font-size: .95rem; color: #7a4a12; margin-top: 6px; }
+  audio { width: 100%; margin-top: 10px; }
+  .box {
+    background: #fff;
+    border: 1px solid #e8d9c0;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin: 14px 0;
+  }
+  .times { font-size: .95rem; color: #555; }
+  .ded { font-size: .95rem; color: #555; }
+  h2.headline {
+    text-align: center;
+    color: #b3541e;
+    font-size: 1.7rem;
+    margin: 20px 0 6px;
+  }
+  h3 { color: #7a4a12; font-size: 1.15rem; margin: 18px 0 8px; }
+  p { margin: 12px 0; font-size: 1.08rem; }
+  .closing {
+    text-align: center;
+    font-weight: bold;
+    color: #7a4a12;
+    margin: 24px 0 40px;
+    font-size: 1.2rem;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>ቤተ እስራኤል</h1>
+  </header>
+
+  <div class="player">
+    <button id="playBtn" aria-label="አጫውት">&#9654;</button>
+    <div class="hint">የሉሑን ለማዳመጥ ▶ ይጫኑ</div>
+    <audio id="audio" preload="none" src="sigd-amharic.mp3"></audio>
+  </div>
+
+  <div class="box times">
+    የሰንበት ጊዜያת - የሳምንቱ የቶራ ንባብ፡ ሐየ ሣራ - የሰንበት መግቢያ፡ 16:26 - የሰንበት መውጫ፡ 17:24 - የራ.ታ. ጊዜ፡ 17:59
+  </div>
+
+  <div class="box ded">
+    ለፈውስ፡ ናታል በን ሆሊያዮ - ፈውስና ስኬት፡ አብርሃም ገልም በን ዮሴፍ ወሸህራ - ለቅኑ የትዳር አጋር፡ ሞሪሽ ባት መናሴ - በመታሰቢያ፡ አስፋው መካላ በን አምሰል
+  </div>
+
+  <h2 class="headline">ምርጉም የስግድ በዓል!</h2>
+
+  <h3>የስግድ ቀን በኢትዮጵያ - በ«ሐየ ሣራ» ሳምንታዊ ንባብ መሰረት (ከመጽሐፉ «ደረኽ ይሩሳላይም»፣ የመርደኻይ ባሩኽ)</h3>
+
+  <p>ስግድ የቃል ኪዳን እድሳት ቀን ነው። የታሰበው የኢትዮጵያ እይሁዶችን (ቤተ እስራኤልን) ትስስር ከእስራኤል ሀገር ካለው እይሁዳዊ ማህበረሰብ ጋር ለማጠናከር ነው። በምክንያቱም ከሌሎች ሕዝቦች መለየት ይገኝበታል - ዕዝራ የውጭ ሴቶችን እንዲያርቁ ያዘዘበትን ስብሰባ ያስመለክታል፤ ዓላማውም ከሌሎች ሕዝቦች ተፅእኖ መለየት ነው።</p>
+
+  <p>ይህ መለየት ተጠብቋል። ቢሆንም ይህንን መበዓል ምን ያህል አስፈላጊ ነው? የስግድ ቀን በተለምዶ ከ«ሐየ ሣራ» ሳምንታዊ ንባብ ጋር ቅርብ ይሆናል። በዚህ ንባብ አብርሃም አባታችን ይስሐቅ ከከነዓናውያን ሴት ልጆች ጋር እንዳይጋባ ነገር ግን ከራሱ ቤተሰብ ልጅ ጋር እንዲጋባ ምን ያህል እንዳጠነከረ ተናግሯል።</p>
+
+  <p>«ኦር ሐይይም» መፍቻው እንደሚያብራራው፣ አብርሃም በዚህ ላይ ያጠነከረው ለትውልዱ ቀጣይነትና ለቤተሰብ ትስስር ነው። በተመሳሳይ የኢትዮጵያ እይሁዶች አባቶቻችን በስደት ውስጥ እያሉ የእይሁዳዊ ማንነታቸውን በቤተሰብና በቶራ ትስስር ጠብቀዋል። «ቤተ እስራኤል» ማህበረሰብ በመለየቱና በቅድስናው ምክንያት ለኢትዮጵያ ነዋሪዎችም ሆነ ታላቅ በረከት ሆኗል። የስግድ ቀን ጠቃሚና ትርጉም ያለው ነው!!</p>
+
+  <h3>የስግድን በዓል ለመበከል የተደረገ ሙከራና የመንፈሳዊ መሪዎች እውነተኛ ቁርጠኝነት (ከመጽሐፉ «ደረኽ ይሩሳላይም»፣ መርደኻይ ባሩኽ)</h3>
+
+  <p>በከፍተኛው ተራራ ላይ በተካሄደው የስግድ ስብሰባ ላይ ያልተለመደ ነገር ተከስቷል፡ በቶራ ንባብ መካከል ሃይማኖታቸውን ወደ ክርስትና የለወጡ አንዳንድ ሰዎች በእልፍኙ መካከል ገብተው በግልጽ «የአዲስ ኪዳን» መጻሕፍት ይዘው ቶራን ለመዋረድና የበዓሉን ቅድስና ለመበከል ሞክረዋል። ማንም እንደማይነካቸው ይመስላቸው ነበር፣ ምክንያቱም ከሥልጣን ጋር ትስስር ነበራቸው እና በእይሁዳዊው ማህበረሰብ ውስጥ ተጽእኖ ያላቸው ዘመዶች ነበሯቸው።</p>
+
+  <p>ግን መንፈሳዊው መሪ ንባቡን አቆመና እነዚያ ቅዱሱን ቀን ለመበከል የመጡ ሰዎች በጽኑ እንዲወጡ ጠየቀ። በዚያን ጊዜ ታላቅ መሰጋገር ተፈጠረ፤ በመጨረሻም እነዚያ ሰዎች ከቅዱሱ ስብሰባ አወጧቸው። እነዚያ ሰዎች ለኢትዮጵያ ሥልጣናት በማህበረሰቡ ላይ እንደሚያሰነግሩና ለማህበረሰቡና በተለይም ለመሪው አደጋ እንደሚያመጣባቸው ታላቅ ፍርሃት ነበር። ነገር ግን መሪው ውጤቱን ያውቅ ነበር፤ ሆኖም ለቶራ ነፍስ መስጠት እንዳለበትና ከምንም ሰው እንደማይፈራ ተረድቷል። መንፈሳዊው መሪና ሕዝቡ ጉዳት አልደረሰባቸውም፤ ሁሉም ለቅድስት ቶራ ነፍስ መስጠት ዝግጁ ነበሩ።</p>
+
+  <p>ማስታወሻ፡ የፕሮቴስታንት ሚሲዮናሪዎች የስግድን ቅዱስ ቀን ለመበከል የሞከሩበት ይህ የመጀመሪያ ጊዜ አልነበረም። ከኢትዮጵያ ታዋቂ መንፈሳዊ መሪዎች አንዱ የሆነው አባ ገታ አስርሳ ጻኤል እንደሚናገረው፣ በወቅቱ ሚሲዮናሪዎች ወደ አካባቢው መጥተው በስግድ ቀን በሕዝብ ሁሉ ፊት ስለ ቶራ እውነትና ስለ ክርስትና ሐሰት ተከርክረዋል። የእይሁዳውያኑ ካህናት፣ በእነኝሁም አባ መመልክ ጻኤልና አባ ገታ አስርሳ፣ ሚሲዮናሪዎቹን በክርክር አሸንፈው አዋርደዋቸዋል፤ በዚያ ልዩና ከፍተኛ ቀን ታላቅ የእግዚአብሔር ስም ማጽደቅ ሆኗል።</p>
+
+  <p class="closing">የአባቶቻችንና የእናቶቻችን መንገድ እንድንከተል ይግባኝ!</p>
+</div>
+
+<script>
+  var btn = document.getElementById('playBtn');
+  var audio = document.getElementById('audio');
+  btn.addEventListener('click', function () {
+    if (audio.paused) { audio.play(); } else { audio.pause(); }
+  });
+  audio.addEventListener('play', function () { btn.innerHTML = '&#10073;&#10073;'; });
+  audio.addEventListener('pause', function () { btn.innerHTML = '&#9654;'; });
+  audio.addEventListener('ended', function () { btn.innerHTML = '&#9654;'; });
+</script>
+</body>
+</html>
